@@ -6,7 +6,10 @@ import useFormValidation from "../hooks/useFormValidation";
 import validateLogin  from "../components/Auth/validateLogin";
 import firebase from "../firebase";
 
-const INITIAL_STATE = { email: "", password: "" };
+const INITIAL_STATE = {
+    email: "",
+    password: ""
+};
 
 const Login = (props) => {
     const {
@@ -15,6 +18,7 @@ const Login = (props) => {
         values,
         isSubmitting
     } = useFormValidation(INITIAL_STATE, validateLogin, authenticateUser);
+    
     const [busy, setBusy] = useState(false)
 
     async function authenticateUser() {
@@ -64,4 +68,4 @@ const Login = (props) => {
     )
 }
 
-export default Login
+export default Login;

@@ -19,7 +19,8 @@ const Signup = (props) => {
         values,
         isSubmitting
     } = useFormValidation(INITIAL_STATE, validateSignup, authenticateUser);
-    const [busy, setBusy] = useState(false)
+
+    const [busy, setBusy] = useState(false);
 
     async function authenticateUser() {
         setBusy(true);
@@ -66,4 +67,4 @@ const Signup = (props) => {
     )
 }
 
-export default Signup
+export default Signup;

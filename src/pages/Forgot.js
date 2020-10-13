@@ -6,7 +6,7 @@ import useFormValidation from "../hooks/useFormValidation";
 import validatePasswordReset from '../components/Auth/validatePasswordReset';
 import firebase from "../firebase";
 
-const INITIAL_STATE = { email: "" }
+const INITIAL_STATE = { email: "" };
 
 const Forgot = (props) => {
     const {
@@ -15,7 +15,8 @@ const Forgot = (props) => {
         values,
         isSubmitting
     } = useFormValidation(INITIAL_STATE, validatePasswordReset, handleResetPassword);
-    const [busy, setBusy] = useState(false)
+
+    const [busy, setBusy] = useState(false);
 
     async function handleResetPassword() {
         setBusy(true);
@@ -51,4 +52,4 @@ const Forgot = (props) => {
     )
 }
 
-export default Forgot
+export default Forgot;

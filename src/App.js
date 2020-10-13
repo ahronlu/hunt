@@ -12,8 +12,8 @@ import EditProfile from "./pages/EditProfile";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Forgot from "./pages/Forgot";
-import useAuth from "./hooks/useAuth";
 import UserContext from "./contexts/UserContext";
+import useAuth from "./hooks/useAuth";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -33,10 +33,9 @@ import "@ionic/react/css/typography.css";
 
 /* Theme variables */
 import "./theme/variables.css";
-import useAuth from "./hooks/useAuth";
 
 const App = () => {
-  const [user, setUser] = useState();
+  const [user, setUser] = useAuth();
   return (
     <IonApp>
       <IonReactRouter>
