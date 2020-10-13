@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { toast } from "../utils/toast";
 
 function useFormValidation(initialState, validate, action) {
@@ -14,17 +14,17 @@ function useFormValidation(initialState, validate, action) {
         setValues(initialState);
         setSubmitting(false)
       } else {
-        toast(Object.values(erros).join(" "));
+        toast(Object.values(errors).join(" "));
         setSubmitting(false);
       }
     }
-    // es-disable-next-line
+    // eslint-disable-next-line
   }, [errors]);
 
-  function handleChange(event) {
+  function handleChange(e) {
     setValues(previousValues => ({
       ...previousValues,
-      [event.target.name]: event.target.value
+      [e.target.name]: e.target.value
     }))
   }
 
@@ -35,7 +35,11 @@ function useFormValidation(initialState, validate, action) {
   }
 
   return {
-    handleSubmit, handleChange, values, setValues, isSubmitting
+    handleSubmit,
+    handleChange,
+    values,
+    setValues,
+    isSubmitting
   }
 }
 
