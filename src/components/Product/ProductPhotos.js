@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import PropTypes from 'prop-types';
-import { IonCard, IonImg, IonItem, IonList, IonThumbnail } from "@ionic/react";
+import PropTypes from "prop-types";
+import { IonImg, IonThumbnail, IonItem, IonCard, IonList } from "@ionic/react";
 
 function ProductPhotos({ photos }) {
   const [index, setIndex] = useState(0);
@@ -14,7 +14,11 @@ function ProductPhotos({ photos }) {
         </IonItem>
         <IonItem>
           {photos.map((p, i) => (
-            <IonThumbnail key={`photo_${i}`} onClick={() => setIndex(i)} slot="start">
+            <IonThumbnail
+              key={`photo_${i}`}
+              onClick={() => setIndex(i)}
+              slot="start"
+            >
               <IonImg src={p} />
             </IonThumbnail>
           ))}
@@ -23,7 +27,7 @@ function ProductPhotos({ photos }) {
     </IonCard>
   );
 }
- 
+
 ProductPhotos.propTypes = {
   photos: PropTypes.array,
 };

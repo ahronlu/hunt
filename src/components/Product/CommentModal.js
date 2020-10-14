@@ -1,17 +1,28 @@
-import React, { useState } from "react";
-import { IonButton, IonButtons, IonContent, IonHeader, IonModal, IonTextarea, IonTitle, IonToolbar } from "@ionic/react";
+import React from "react";
+import {
+  IonModal,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonButtons,
+  IonButton,
+  IonContent,
+  IonTextarea,
+} from "@ionic/react";
 
 const CommentModal = ({ isOpen, title, sendAction, closeAction, comment }) => {
-  const [commentText, setCommentText] = useState(comment ? comment.text : "");
+  const [commentText, setCommentText] = React.useState(
+    comment ? comment.text : ""
+  );
 
-  function handleSendAction (item) {
+  function handleSendAction(item) {
     sendAction(item);
     setCommentText("");
   }
 
   return (
     <IonModal isOpen={isOpen} onDidDismiss={closeAction}>
-      <IonHeader translate>
+      <IonHeader translucent>
         <IonToolbar color="primary">
           <IonTitle>{title}</IonTitle>
           <IonButtons slot="start">
@@ -30,11 +41,11 @@ const CommentModal = ({ isOpen, title, sendAction, closeAction, comment }) => {
           cols={25}
           placeholder="Your comment"
           value={commentText}
-          onIonChange={e => setCommentText(e.target.value)}
-        /> 
+          onIonChange={(e) => setCommentText(e.target.value)}
+        />
       </IonContent>
     </IonModal>
   );
-}
+};
 
 export default CommentModal;

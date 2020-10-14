@@ -1,13 +1,20 @@
-import React, { useContext, useState } from "react";
-import { IonButton, IonCard, IonCardContent, IonItem, IonLabel, IonList } from "@ionic/react";
+import React from "react";
+import {
+  IonCard,
+  IonCardContent,
+  IonList,
+  IonItem,
+  IonLabel,
+  IonButton,
+} from "@ionic/react";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import UserContext from "../../contexts/UserContext";
 import CommentModal from "./CommentModal";
 import firebase from "../../firebase";
 
 const ProductComment = ({ comment, product, setProduct }) => {
-  const { user } = useContext(UserContext);
-  const [showModal, setShowModal] = useState(false);
+  const { user } = React.useContext(UserContext);
+  const [showModal, setShowModal] = React.useState(false);
 
   const postedByAuthUser = user && user.uid === comment.postedBy.id;
 
@@ -18,14 +25,16 @@ const ProductComment = ({ comment, product, setProduct }) => {
   function handleEditComment(commentText) {
     const productRef = firebase.db.collection("products").doc(product.id);
     productRef.get().then((doc) => {
-      if(doc.exists) {
+      if (doc.exists) {
         const previousComments = doc.data().comments;
         const newComment = {
           postedBy: { id: user.uid, name: user.displayName },
           created: Date.now(),
           text: commentText,
         };
-        const updatedComments = previousComments.map((item) => item.created === comment.created ? newComment : item);
+        const updatedComments = previousComments.map((item) =>
+          item.created === comment.created ? newComment : item
+        );
         productRef.update({ comments: updatedComments });
         setProduct((prevState) => ({
           ...prevState,
@@ -39,7 +48,7 @@ const ProductComment = ({ comment, product, setProduct }) => {
   function handleDeleteComment() {
     const productRef = firebase.db.collection("products").doc(product.id);
     productRef.get().then((doc) => {
-      if(doc.exists) {
+      if (doc.exists) {
         const previousComments = doc.data().comments;
         const updatedComments = previousComments.filter(
           (item) => item.created !== comment.created
@@ -47,7 +56,7 @@ const ProductComment = ({ comment, product, setProduct }) => {
         productRef.update({ comments: updatedComments });
         setProduct((prevState) => ({
           ...prevState,
-          comments: updatedComments
+          comments: updatedComments,
         }));
       }
     });
@@ -65,26 +74,39 @@ const ProductComment = ({ comment, product, setProduct }) => {
       <IonCard>
         <IonCardContent>
           <IonList lines="none">
-            <IonItem className="ion-text-wrap">
-              <IonLabel className="ion-text-wrap">
-              <p style={{ alignItems: "center", fontSize: "0.8rem", fontWeight: "normal" }}>
-                {comment.postedBy.name} {" | "}
-                {formatDistanceToNow(comment.created)}
-              </p>
-              <div className="ion-padding-vertical">{comment.text}</div>
-              {postedByAuthUser && (
-                <IonButton size="small" onClick={() => setShowModal(true)}>Edit</IonButton>
-              )}
-              {postedByAuthUser && (
-                <IonButton size="small" onClick={() => handleDeleteComment(comment)}>Delete</IonButton>
-              )}
+            <IonItem>
+              <IonLabel class="ion-text-wrap ">
+                <p
+                  style={{
+                    alignItems: "center",
+                    fontSize: "0.8rem",
+                    fontWeight: "normal",
+                  }}
+                >
+                  {comment.postedBy.name} {" | "}
+                  {formatDistanceToNow(comment.created)}
+                </p>
+                <div className="ion-padding-vertical">{comment.text}</div>
+                {postedByAuthUser && (
+                  <IonButton size="small" onClick={() => setShowModal(true)}>
+                    Edit
+                  </IonButton>
+                )}
+                {postedByAuthUser && (
+                  <IonButton
+                    size="small"
+                    onClick={() => handleDeleteComment(comment)}
+                  >
+                    Delete
+                  </IonButton>
+                )}
               </IonLabel>
             </IonItem>
           </IonList>
         </IonCardContent>
       </IonCard>
     </>
-  )
-}
+  );
+};
 
 export default ProductComment;

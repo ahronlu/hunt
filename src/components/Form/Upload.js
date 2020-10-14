@@ -1,25 +1,25 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { IonButton, isPlatform } from "@ionic/react";
-import { CameraResultType, Plugins } from "@capacitor/core";
+import { Plugins, CameraResultType } from "@capacitor/core";
 import { dataURItoBlob } from "../../utils/file";
-import "./Upload.css"
+import "./Upload.css";
 
 const { Camera } = Plugins;
 
 function Upload({ onChange, placeholder, files, multiple, ...rest }) {
-  const handleSelectFile = async(e) => {
-    if(isPlatform("mobile")) {
+  const handleSelectFile = async (evt) => {
+    if (isPlatform("mobile")) {
       const image = await Camera.getPhoto({
-        quality:90,
+        quality: 90,
         allowEditing: false,
         resultType: CameraResultType.DataUrl,
       });
       const blob = dataURItoBlob(image.dataUrl);
 
-      onChange([blob])
+      onChange([blob]);
     } else {
-      onChange([...e.target.files]);
+      onChange([...evt.target.files]);
     }
   };
 
@@ -31,7 +31,7 @@ function Upload({ onChange, placeholder, files, multiple, ...rest }) {
           type="file"
           className="file-input"
           accept="image/*"
-          multiple="multiple"
+          multiple={multiple}
           onChange={handleSelectFile}
         />
       )}

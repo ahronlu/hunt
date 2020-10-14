@@ -1,9 +1,16 @@
-import React, { useContext, useEffect, useState } from "react";
-import { IonCol, IonContent, IonGrid, IonPage, IonRow, IonButton } from "@ionic/react";
+import React from "react";
+import {
+  IonPage,
+  IonContent,
+  IonButton,
+  IonGrid,
+  IonRow,
+  IonCol,
+} from "@ionic/react";
 import { closeCircleOutline } from "ionicons/icons";
-import productService from "../services/product";
 
 import firebase from "../firebase";
+import productService from "../services/product";
 import { Plugins } from "@capacitor/core";
 import UserContext from "../contexts/UserContext";
 import NavHeader from "../components/Header/NavHeader";
@@ -15,25 +22,25 @@ import CommentModal from "../components/Product/CommentModal";
 const { Browser } = Plugins;
 
 const Product = (props) => {
-  const { user } = useContext(UserContext);
-  const [product, setProduct] = useState(null);
-  const [showModal, setShowModal] = useState(false);
+  const { user } = React.useContext(UserContext);
+  const [product, setProduct] = React.useState(null);
+  const [showModal, setShowModal] = React.useState(false);
   const productId = props.match.params.productId;
   const productRef = firebase.db.collection("products").doc(productId);
 
-  useEffect(() => {
+  React.useEffect(() => {
     getProduct();
     // eslint-disable-next-line
-  },[productId]);
+  }, [productId]);
 
   function getProduct() {
     productRef.get().then((doc) => {
       setProduct({ ...doc.data(), id: doc.id });
-    })
+    });
   }
 
   function handleOpenModal() {
-    if(!user) {
+    if (!user) {
       props.history.push("/login");
     } else {
       setShowModal(true);
@@ -45,17 +52,17 @@ const Product = (props) => {
   }
 
   function handleAddComment(commentText) {
-    if(!user) {
+    if (!user) {
       props.history.push("/login");
     } else {
       productRef.get().then((doc) => {
-        if(doc.exists) {
+        if (doc.exists) {
           const previousComments = doc.data().comments;
           const newComment = {
             postedBy: { id: user.uid, name: user.displayName },
             created: Date.now(),
-            text: commentText
-          }
+            text: commentText,
+          };
           const updatedComments = [...previousComments, newComment];
           productRef.update({ comments: updatedComments });
           setProduct((prevState) => ({
@@ -69,21 +76,26 @@ const Product = (props) => {
   }
 
   function handleAddVote() {
-    if(!user) {
+    if (!user) {
       props.history.push("/login");
     } else {
       productService
-        .addUpVote(user, productId)
+        .addUpvote(user, productId)
         .then((newProduct) => setProduct(newProduct))
         .catch(() => props.history.push("/login"));
     }
   }
 
   function handleDeleteProduct() {
-    productRef.delete()
-    .then(() => console.log("Document deleted"))
-    .catch(err => console.log(err));
-    props.history.push("/")
+    productRef
+      .delete()
+      .then(() => {
+        console.log(`Document with ID ${product.id} deleted`);
+      })
+      .catch((err) => {
+        console.error("Error deleting document:", err);
+      });
+    props.history.push("/");
   }
 
   function postedByAuthUser(product) {
@@ -115,10 +127,10 @@ const Product = (props) => {
           <>
             <IonGrid>
               <IonRow>
-                <IonCol className="ion-text-xl-center">
-                  <ProductItem product={product} browser={openBrowser}  />
+                <IonCol class="ion-text-center">
+                  <ProductItem product={product} browser={openBrowser} />
                   <ProductPhotos photos={product.photos} />
-                  <IonButton onClick={handleAddVote} size="small">
+                  <IonButton onClick={() => handleAddVote()} size="small">
                     Upvote
                   </IonButton>
                   <IonButton onClick={() => handleOpenModal()} size="small">

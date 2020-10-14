@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import firebase from "../../firebase";
 import ProductItem from "./ProductItem";
 import formatDate from "date-fns/format";
@@ -7,30 +7,31 @@ import isToday from "date-fns/isToday";
 import { IonItem, IonLabel } from "@ionic/react";
 
 const ProductList = (props) => {
-  const [products, setProducts] = useState([])
+  const [products, setProducts] = React.useState([]);
   const isTrending = props.location.pathname.includes("trending");
 
-  useEffect(() => {
-     const unsubscribe = getProducts();
-     return () => unsubscribe();
-     //eslint-disable-next-line
+  React.useEffect(() => {
+    const unsubscribe = getProducts();
+    return () => unsubscribe();
+    // eslint-disable-next-line
   }, [isTrending]);
 
   function getProducts() {
-    if(isTrending) {
+    if (isTrending) {
       return firebase.db
         .collection("products")
         .orderBy("voteCount", "desc")
         .onSnapshot(handleSnapshot);
     }
 
-    return firebase.db.collection("products")
-    .orderBy("created", "desc")
-    .onSnapshot(handleSnapshot);
+    return firebase.db
+      .collection("products")
+      .orderBy("created", "desc")
+      .onSnapshot(handleSnapshot);
   }
 
   function handleSnapshot(snapshot) {
-    const products = snapshot.docs.map(doc => {
+    const products = snapshot.docs.map((doc) => {
       return { id: doc.id, ...doc.data() };
     });
 
@@ -46,17 +47,16 @@ const ProductList = (props) => {
         showCount={true}
         url={`/product/${product.id}`}
         product={product}
-        index={index
-        +1}
+        index={index + 1}
       />,
     ];
     const currentDate = isToday(product.created)
-    ? "Today"
-    : isYesterday(product.created)
-    ? "Yesterday"
-    : formatDate(product.created, "MMM d");
+      ? "Today"
+      : isYesterday(product.created)
+      ? "Yesterday"
+      : formatDate(product.created, "MMM d");
 
-    if(currentDate !== prevDate && !isTrending) {
+    if (currentDate !== prevDate && !isTrending) {
       result.unshift(
         <IonItem color="medium" lines="none" key={currentDate}>
           <IonLabel>
@@ -69,7 +69,7 @@ const ProductList = (props) => {
     }
 
     return result;
-  })
-}
+  });
+};
 
 export default ProductList;

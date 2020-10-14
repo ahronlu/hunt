@@ -1,18 +1,18 @@
-import { useState, useEffect } from "react";
+import React from "react";
 import { toast } from "../utils/toast";
 
 function useFormValidation(initialState, validate, action) {
-  const [values, setValues] = useState(initialState);
-  const [errors, setErrors] = useState({});
-  const [isSubmitting, setSubmitting] = useState(false);
+  const [values, setValues] = React.useState(initialState);
+  const [errors, setErrors] = React.useState({});
+  const [isSubmitting, setSubmitting] = React.useState(false);
 
-  useEffect(() => {
-    if(isSubmitting) {
+  React.useEffect(() => {
+    if (isSubmitting) {
       const noErrors = Object.keys(errors).length === 0;
-      if(noErrors) {
+      if (noErrors) {
         action();
         setValues(initialState);
-        setSubmitting(false)
+        setSubmitting(false);
       } else {
         toast(Object.values(errors).join(" "));
         setSubmitting(false);
@@ -21,11 +21,11 @@ function useFormValidation(initialState, validate, action) {
     // eslint-disable-next-line
   }, [errors]);
 
-  function handleChange(e) {
-    setValues(previousValues => ({
+  function handleChange(event) {
+    setValues((previousValues) => ({
       ...previousValues,
-      [e.target.name]: e.target.value
-    }))
+      [event.target.name]: event.target.value,
+    }));
   }
 
   function handleSubmit() {
@@ -39,8 +39,8 @@ function useFormValidation(initialState, validate, action) {
     handleChange,
     values,
     setValues,
-    isSubmitting
-  }
+    isSubmitting,
+  };
 }
 
 export default useFormValidation;
