@@ -12,7 +12,13 @@ import {
   IonText,
   IonThumbnail
 } from "@ionic/react";
-import { caretUp, chevronUpCircleOutline, personCircleOutline, timeOutline } from "ionicons/icons";
+import {
+  caretUp,
+  chevronUpCircleOutline,
+  personCircleOutline,
+  chatbubbleEllipsesOutline,
+  timeOutline
+} from "ionicons/icons";
 import UserContext from "../../contexts/UserContext";
 import productService from "../../services/product";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
@@ -53,6 +59,20 @@ const ProductItem = ({product, history, url, browser}) => {
                 <IonText style={{ verticalAlign: "middle" }}>{product.postedBy.name} points</IonText> {" | "}
                 <IonIcon icon={timeOutline} stle={{ verticalAlign: "middle" }} />{" "}
                 <IonText style={{ verticalAlign: "middle" }}>{formatDistanceToNow(product.created)}</IonText>
+                {product.comments.length > 0 && (
+                  <>
+                    {" | "}
+                    <IonIcon
+                      icon={chatbubbleEllipsesOutline}
+                      style={{ verticalAlign: "middle" }}
+                    />{" "}
+                    <IonText
+                      style={{ verticalAlign: "middle" }}
+                    >
+                      {product.comments.length} comments
+                    </IonText>
+                  </>
+                )}{" "}
               </p>
             </IonLabel>
             <IonButton slot="end" onClick={addUpvote} size="large">
