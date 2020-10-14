@@ -11,7 +11,7 @@ const Home = (props) => {
             <IonContent fullscreen>
               <LargeHeader title="Hunt"/>
               <br></br>
-              <ProductList loaction={props.loaction} />
+              <ProductList location={props.location} />
             </IonContent>
         </IonPage>
     )

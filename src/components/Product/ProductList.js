@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import firebase from "../../firebase";
 import ProductItem from "./ProductItem";
 import formatDate from "date-fns/format";
@@ -7,7 +7,7 @@ import isToday from "date-fns/isToday";
 import { IonItem, IonLabel } from "@ionic/react";
 
 const ProductList = (props) => {
-  const [proucts, setProducts] = useState([])
+  const [products, setProducts] = useState([])
   const isTrending = props.location.pathname.includes("trending");
 
   useEffect(() => {
@@ -21,7 +21,7 @@ const ProductList = (props) => {
       return firebase.db
         .collection("products")
         .orderBy("voteCount", "desc")
-        .onSnapshot(handeSnapshot);
+        .onSnapshot(handleSnapshot);
     }
 
     return firebase.db.collection("products")
@@ -44,7 +44,7 @@ const ProductList = (props) => {
       <ProductItem
         key={product.id}
         showCount={true}
-        url={`/product/${product.id}`
+        url={`/product/${product.id}`}
         product={product}
         index={index
         +1}

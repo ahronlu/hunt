@@ -12,7 +12,7 @@ const Trending = (props) => {
             <IonContent fullscreen>
               <LargeHeader title="Trending"/>              
               <br></br>
-              <ProductList loaction={props.loaction} />
+              <ProductList location={props.location} />
             </IonContent>
         </IonPage>
     )
