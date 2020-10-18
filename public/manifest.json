@@ -1,11 +1,16 @@
 {
-  "short_name": "Ionic App",
-  "name": "My Ionic App",
+  "short_name": "Koftov Hunt",
+  "name": "Koftov Hunt",
   "icons": [
     {
       "src": "assets/icon/favicon.png",
-      "sizes": "64x64 32x32 24x24 16x16",
+      "sizes": "64x64",
       "type": "image/x-icon"
+    },
+    {
+      "src": "assets/icon/icon-144.png",
+      "type": "image/png",
+      "sizes": "144x144"
     },
     {
       "src": "assets/icon/icon.png",
